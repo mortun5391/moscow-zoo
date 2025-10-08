@@ -3,11 +3,18 @@ package hse.moscowzoo.domain.entities.alive;
 import hse.moscowzoo.domain.interfaces.IAlive;
 import hse.moscowzoo.domain.interfaces.IInventory;
 import hse.moscowzoo.domain.valueobjects.HealthStatus;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class Animal implements IAlive, IInventory {
     private int inventoryNumber;
     private String name;
+
+    @Setter
     private int dailyFoodConsumption;
+
+    @Setter
+    @Getter
     private HealthStatus healthStatus;
 
     public Animal(int inventoryNumber, String name, int dailyFoodConsumption) {
@@ -34,20 +41,4 @@ public abstract class Animal implements IAlive, IInventory {
         return dailyFoodConsumption;
     }
 
-    @Override
-    public void setInventoryNumber(int number) {
-        this.inventoryNumber = number;
-    }
-
-    public HealthStatus getHealthStatus() {
-        return healthStatus;
-    }
-
-    public void setHealthStatus(HealthStatus healthStatus) {
-        this.healthStatus = healthStatus;
-    }
-
-    public void setDailyFoodConsumption(int dailyFoodConsumption) {
-        this.dailyFoodConsumption = dailyFoodConsumption;
-    }
 }
