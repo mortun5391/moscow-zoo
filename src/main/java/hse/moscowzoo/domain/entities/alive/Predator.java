@@ -1,9 +1,8 @@
 package hse.moscowzoo.domain.entities.alive;
 
-import hse.moscowzoo.domain.valueobjects.KindnessLevel;
 
 public abstract class Predator extends Animal{
-    public Predator(int inventoryNumber, String name, int dailyFoodConsumption, KindnessLevel kindnessLevel) {
+    public Predator(int inventoryNumber, String name, int dailyFoodConsumption) {
         super(inventoryNumber, name, dailyFoodConsumption);
     }
 

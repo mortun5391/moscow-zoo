@@ -2,9 +2,11 @@ package hse.moscowzoo.services;
 
 import hse.moscowzoo.domain.entities.alive.Animal;
 import hse.moscowzoo.domain.valueobjects.HealthStatus;
+import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
+@Service
 public class VeterinaryClinic {
     private final Random random = new Random();
 

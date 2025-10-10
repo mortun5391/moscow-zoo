@@ -1,6 +1,5 @@
 package hse.moscowzoo.repositories;
 
-import hse.moscowzoo.domain.entities.alive.Animal;
 import hse.moscowzoo.domain.entities.things.Thing;
 
 import java.util.List;
