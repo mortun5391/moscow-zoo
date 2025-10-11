@@ -4,10 +4,12 @@ import hse.moscowzoo.domain.entities.alive.Animal;
 import hse.moscowzoo.domain.interfaces.IInventory;
 import hse.moscowzoo.repositories.AnimalRepository;
 import hse.moscowzoo.repositories.ThingsRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ZooInventoryService {
     private final AnimalRepository animalRepository;
     private final ThingsRepository thingsRepository;

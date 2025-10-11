@@ -5,21 +5,22 @@ import hse.moscowzoo.services.AnimalRegistrationService;
 import hse.moscowzoo.services.ContactZooService;
 import hse.moscowzoo.services.FoodCalculationService;
 import hse.moscowzoo.services.ZooInventoryService;
+import hse.moscowzoo.utils.InputValidator;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ConsoleMenu {
     private final ConsolePrinter printer;
-    private final ConsoleReader reader;
+    private final InputValidator inputValidator;
     private final AnimalRegistrationService registrationService;
     private final FoodCalculationService foodService;
     private final ContactZooService contactZooService;
     private final ZooInventoryService inventoryService;
 
-    public ConsoleMenu(ConsolePrinter printer, ConsoleReader reader, AnimalRegistrationService registrationService,
+    public ConsoleMenu(ConsolePrinter printer,InputValidator inputValidator, AnimalRegistrationService registrationService,
                        FoodCalculationService foodService, ContactZooService contactZooService, ZooInventoryService inventoryService) {
         this.printer = printer;
-        this.reader = reader;
+        this.inputValidator = inputValidator;
         this.registrationService = registrationService;
         this.foodService = foodService;
         this.contactZooService = contactZooService;
@@ -27,48 +28,56 @@ public class ConsoleMenu {
     }
 
 
+
     public void showMainMenu() {
         while (true) {
             printer.printMainMenu();
-            int choice = reader.readInt("Выберите пункт: ");
+            int choice = inputValidator.getIntInput("Choose item: ");
 
             switch (choice) {
                 case 1 -> addAnimal();
                 case 2 -> showAllAnimals();
-                //case 3 -> calculateFood();
-                //case 4 -> showContactZooAnimals();        TODO
-                //case 5 -> showInventory();
                 case 0 -> {
-                    System.out.println("До свидания!");
+                    System.out.println("Bye!");
                     return;
                 }
-                default -> System.out.println("❌ Неверный пункт меню!");
+                default -> System.out.println("Wrong menu item!");
             }
         }
     }
 
     private void addAnimal() {
-        System.out.println("\n--- Добавление животного ---");
-        String name = reader.readString("Имя животного: ");
-        int inventoryNumber = reader.readInt("Инвентарный номер: ");
+        System.out.println("\n--- Adding animal ---");
 
-        printer.printAnimalTypesMenu();
+        try {
+            String name = inputValidator.getStringInput("Animal`s name: ");
+            int inventoryNumber = inputValidator.getIntInput("Inventory number: ");
 
-        int type = reader.readInt("Выберите тип: ");
+            printer.printAnimalTypesMenu();
+            int type = inputValidator.getIntInput("Choose type: ");
 
-        Animal animal = switch (type) {
-            case 1 -> new Rabbit(inventoryNumber, name, reader.readKindnessLevel());
-            case 2 -> new Monkey(inventoryNumber, name, reader.readKindnessLevel());
-            case 3 -> new Tiger(inventoryNumber, name);
-            case 4 -> new Wolf(inventoryNumber, name);
-            default -> throw new IllegalArgumentException("Неверный тип животного");
-        };
+            Animal animal = switch (type) {
+                case 1 -> new Rabbit(inventoryNumber, name, inputValidator.readKindnessLevel());
+                case 2 -> new Monkey(inventoryNumber, name, inputValidator.readKindnessLevel());
+                case 3 -> new Tiger(inventoryNumber, name);
+                case 4 -> new Wolf(inventoryNumber, name);
+                default -> throw new IllegalArgumentException("Wrong animal type");
+            };
 
-        boolean accepted = registrationService.registerAnimal(animal);
-        printer.printAnimalAdded(animal, accepted);
+            boolean accepted = registrationService.registerAnimal(animal);
+            printer.printAnimalAdded(animal, accepted);
+
+        } catch (Exception e) {
+            System.out.println("Error when adding an animal: " + e.getMessage());
+        }
     }
 
     private void showAllAnimals() {
-        printer.printAnimals(inventoryService.getAnimals());
+        try {
+            printer.printAnimals(inventoryService.getAnimals());
+        } catch (Exception e) {
+            System.out.println("Error when showing animals: " + e.getMessage());
+        }
     }
 }
+

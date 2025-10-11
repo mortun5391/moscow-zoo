@@ -8,4 +8,5 @@ public class Monkey extends Herbo{
     public Monkey(int inventoryNumber, String name, KindnessLevel kindnessLevel) {
         super(inventoryNumber, name, DEFAULT_FOOD_CONSUMPTION, kindnessLevel);
     }
+
 }
